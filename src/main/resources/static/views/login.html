@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>登录页面</title>
+	<style type="text/css">
+		.login {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #42b983;
+		}
+
+		.login__label {
+			display: inline-flex;
+			justify-content: flex-end;
+			width: 70px;
+			margin-bottom: 10px;
+		}
+
+		.login__button-line {
+			display: flex;
+			justify-content: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="login" class="login">
+		<div>
+			<div>
+				<span class="login__label">用户名：</span><span><input id="username"
+						type="text" /></span>
+			</div>
+			<div>
+				<span class="login__label">密码：</span><span><input id="password"
+						type="password" /></span>
+			</div>
+			<div class="login__button-line">
+				<input type="button" value="登录" onclick="login();" />
+			</div>
+		</div>
+	</div>
+	<script src="../lib/crypto-js/crypto-js.js">
+	</script>
+	<script>
+		const load = () => {
+			console.log("load event detected!");
+			const height = window.innerHeight - 50;
+			const div1 = document.getElementById("login");
+			div1.style.height = height + 'px';
+		}
+		window.onload = load;
+		const login = () => {
+			const url = '/session';
+			const username = document.getElementById("username").value;
+			const inputPassword = document.getElementById("password").value;
+			const password = CryptoJS.SHA256(username+inputPassword).toString();
+			const data = {
+				username: username,
+				password: password
+			};
+			const myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			const myInit = {
+				method: 'POST',
+				headers: myHeaders,
+				cache: 'default',
+				body: JSON.stringify(data)
+			};
+			const myRequest = new Request(url, myInit);
+			fetch(myRequest).then(response => response.json())
+				.then(vo => {})
+				.catch(e => console.log("Oops, error", e));
+		}
+	</script>
+</body>
+
+</html>
