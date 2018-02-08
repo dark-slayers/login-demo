@@ -1,12 +1,18 @@
 package person.liuxx.demo.login.service.impl;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import person.liuxx.demo.login.controller.LoginController;
 import person.liuxx.demo.login.dto.UserDTO;
+import person.liuxx.demo.login.dto.UserJWT;
 import person.liuxx.demo.login.service.LoginService;
+import person.liuxx.demo.login.vo.TestVO;
 
 /**
  * @author 刘湘湘
@@ -20,9 +26,32 @@ public class LoginServiceImpl implements LoginService
     private Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @Override
-    public String login(UserDTO user)
+    public Optional<TestVO> loginSession(HttpSession session, UserDTO user)
     {
         log.info("用户尝试登录：{}", user);
-        return "OK";
+        session.setAttribute(LoginService.LOGIN_USER_NAME, user.getUsername());
+        log.info("session.getId()：{}", session.getId());
+        log.info("LoginService.LOGIN_USER_NAME：{}", session.getAttribute(
+                LoginService.LOGIN_USER_NAME));
+        Optional<TestVO> result = authV1(user).map(u ->
+        {
+            TestVO vo = new TestVO();
+            vo.setMessage("OK");
+            return vo;
+        });
+        return result;
+    }
+
+    private Optional<UserJWT> authV1(UserDTO user)
+    {
+        UserJWT result = new UserJWT();
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<TestVO> loginToken(UserDTO user)
+    {
+        // TODO 自动生成的方法存根
+        return null;
     }
 }

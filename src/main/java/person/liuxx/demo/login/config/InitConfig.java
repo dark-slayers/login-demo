@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 
+import person.liuxx.demo.login.config.filter.LoginFilter;
+
 /**
  * 初始化配置
  * 
@@ -19,6 +21,8 @@ import com.alibaba.druid.support.http.WebStatFilter;
 @Configuration
 public class InitConfig
 {
+    private int filterOrder = 100;
+
     @Bean
     public ServletRegistrationBean servletRegistrationBean()
     {
@@ -32,6 +36,19 @@ public class InitConfig
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         // Druid数据源配置
         registrationBean.setFilter(new WebStatFilter());
+        registrationBean.setOrder(filterOrder);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean userFilterRegistrationBean()
+    {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new LoginFilter());
+        registrationBean.setOrder(filterOrder - 1);
+        registrationBean.addUrlPatterns("/*");
+        // registrationBean.addInitParameter("paramName", "paramValue");
+        registrationBean.setName("loginFilter");
         return registrationBean;
     }
 }

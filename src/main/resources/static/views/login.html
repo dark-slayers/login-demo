@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-	<meta charset="UTF-8">
-	<title>登录页面</title>
-	<style type="text/css">
-		.login {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: #42b983;
-		}
+<meta charset="UTF-8">
+<title>登录页面</title>
+<style type="text/css">
+.login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #42b983;
+}
 
-		.login__label {
-			display: inline-flex;
-			justify-content: flex-end;
-			width: 70px;
-			margin-bottom: 10px;
-		}
+.login__label {
+	display: inline-flex;
+	justify-content: flex-end;
+	width: 70px;
+	margin-bottom: 10px;
+}
 
-		.login__button-line {
-			display: flex;
-			justify-content: center;
-		}
-	</style>
+.login__button-line {
+	display: flex;
+	justify-content: center;
+}
+</style>
 </head>
-
 <body>
 	<div id="login" class="login">
 		<div>
@@ -52,6 +50,28 @@
 			div1.style.height = height + 'px';
 		}
 		window.onload = load;
+		const initPostRequest=(url,data)=>{
+			const myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			const myInit = {
+				method: 'POST',
+				headers: myHeaders,
+				cache: 'default',
+				body: JSON.stringify(data),
+				credentials:'same-origin'
+			};
+			const myRequest = new Request(url, myInit);
+			return myRequest;
+		};
+		const initGetRequest=(url)=>{
+			const myInit = {
+				method: 'GET',
+				cache: 'default',
+				credentials:'same-origin'
+			};
+			const myRequest = new Request(url, myInit);
+			return myRequest;
+		};
 		const login = () => {
 			const url = '/session';
 			const username = document.getElementById("username").value;
@@ -61,20 +81,16 @@
 				username: username,
 				password: password
 			};
-			const myHeaders = new Headers();
-			myHeaders.append("Content-Type", "application/json");
-			const myInit = {
-				method: 'POST',
-				headers: myHeaders,
-				cache: 'default',
-				body: JSON.stringify(data)
-			};
-			const myRequest = new Request(url, myInit);
-			fetch(myRequest).then(response => response.json())
-				.then(vo => {})
+			fetch(initPostRequest(url,data)).then(response => response.json())
+				.then(vo => {					
+					fetch(initGetRequest("/test")).then(response => response.json())
+					.then(v => {
+						alert(JSON.stringify(v));
+					})
+					.catch(e => console.log("Oops, error", e));
+				})
 				.catch(e => console.log("Oops, error", e));
 		}
 	</script>
 </body>
-
 </html>
