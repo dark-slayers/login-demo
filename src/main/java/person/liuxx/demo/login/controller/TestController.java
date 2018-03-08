@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,19 @@ public class TestController
     public TestVO test(HttpSession session)
     {
         log.info("GET /test");
+        log.info("SecurityContextHolder.getContext().getAuthentication()：{}", SecurityContextHolder
+                .getContext().getAuthentication());
+        TestVO vo = new TestVO();
+        vo.setMessage("TEST !");
+        return vo;
+    }
+
+    @GetMapping("/t1")
+    public TestVO test1(HttpSession session)
+    {
+        log.info("GET /t1");
+        log.info("SecurityContextHolder.getContext().getAuthentication()：{}", SecurityContextHolder
+                .getContext().getAuthentication());
         TestVO vo = new TestVO();
         vo.setMessage("TEST !");
         return vo;

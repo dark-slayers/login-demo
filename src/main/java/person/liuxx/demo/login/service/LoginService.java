@@ -15,8 +15,8 @@ import person.liuxx.demo.login.vo.TestVO;
  */
 public interface LoginService
 {
-    static final String LOGIN_USER_NAME = "user";
-    static final String ADDRESS = "address";
+    String LOGIN_USER_NAME = "user";
+    String ADDRESS = "address";
 
     Optional<TestVO> loginSession(HttpSession session, UserDTO user);
 

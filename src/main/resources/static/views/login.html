@@ -83,7 +83,7 @@
 			};
 			fetch(initPostRequest(url,data)).then(response => response.json())
 				.then(vo => {					
-					fetch(initGetRequest("/test")).then(response => response.json())
+					fetch(initGetRequest("/t1")).then(response => response.json())
 					.then(v => {
 						alert(JSON.stringify(v));
 					})

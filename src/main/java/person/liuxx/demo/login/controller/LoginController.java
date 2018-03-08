@@ -33,7 +33,7 @@ public class LoginController
     @PostMapping("/session")
     public TestVO loginSession(HttpSession session, @RequestBody UserDTO user)
     {
-        return service.loginSession(session, user).orElseThrow(() ->
+        return service.loginSession(session, user).<SaveException>orElseThrow(() ->
         {
             throw new SaveException("登录失败！");
         });
@@ -42,7 +42,7 @@ public class LoginController
     @PostMapping("/token")
     public TestVO loginToken(HttpSession session, @RequestBody UserDTO user)
     {
-        return service.loginToken(user).orElseThrow(() ->
+        return service.loginToken(user).<SaveException>orElseThrow(() ->
         {
             throw new SaveException("登录失败！");
         });
